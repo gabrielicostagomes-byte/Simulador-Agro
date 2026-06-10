@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Agro Sustentável | Agrinho 2026</title>
+    <style>
+        /* Estilização Geral */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .calculadora-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-top: 8px solid #2E7D32;
+        }
+
+        h1 {
+            color: #2E7D32;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .descricao {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo das Perguntas */
+        .pergunta-bloco {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .pergunta-bloco p {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+        label:hover {
+            background-color: #e8f5e9;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #2E7D32; /* Deixa a bolinha verde */
+        }
+
+        /* Botão de Calcular */
+        .btn-calcular {
+            display: block;
+            width: 100%;
+            background-color: #2E7D32;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-calcular:hover {
+            background-color: #1b5e20;
+        }
+
+        /* Painel de Resultado */
+        .resultado-box {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none; /* Sumido no início */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculadora-container">
+        <h1>Simulador Verde</h1>
+        <p class="descricao">Descubra se a sua produção está em equilíbrio com o meio ambiente!</p>
+
+        <form id="formulario-sustentavel">
+            <div class="pergunta-bloco">
+                <p>1. Qual é a principal fonte de energia utilizada na fazenda?</p>
+                <label><input type="radio" name="p1" value="0" required> Rede elétrica comum / Gerador a Diesel</label>
+                <label><input type="radio" name="p1" value="1"> Energia Solar ou Biomassa (Sustentável)</label>
+            </div>
+
+            <div class="pergunta-bloco">
+                <p>2. Como é feita a gestão da água para irrigação?</p>
+                <label><input type="radio" name="p2" value="0"> Irrigação comum sem controle de tempo</label>
+                <label><input type="radio" name="p2" value="1"> Sistema de gotejamento ou sensores de umidade (Sustentável)</label>
+            </div>
+
+            <div class="pergunta-bloco">
+                <p>3. A propriedade adota a rotação de culturas ou plantio direto?</p>
+                <label><input type="radio" name="p3" value="1"> Sim, sempre alternamos as espécies para proteger o solo (Sustentável)</label>
+                <label><input type="radio" name="p3" value="0"> Não, plantamos sempre a mesma cultura no mesmo solo</label>
+            </div>
+
+            <div class="pergunta-bloco">
+                <p>4. Existe respeito às Áreas de Preservação Permanente (APPs) e matas ciliares?</p>
+                <label><input type="radio" name="p4" value="1"> Sim, todas as áreas verdes e rios são protegidos (Sustentável)</label>
+                <label><input type="radio" name="p4" value="0"> Parcialmente ou ainda precisamos isolar essas áreas</label>
+            </div>
+
+            <button type="button" class="btn-calcular" onclick="calcularResultado()">Calcular Equilíbrio</button>
+        </form>
+
+        <div id="resultado" class="resultado-box"></div>
+    </div>
+
+    <script>
+        function calcularResultado() {
+            // Seleciona todas as respostas marcadas
+            const respostas = document.querySelectorAll('input[type="radio"]:checked');
+            
+            // Validação: Garante que o usuário respondeu as 4 perguntas antes de calcular
+            if (respostas.length < 4) {
+                alert("Por favor, responda todas as perguntas antes de calcular!");
+                return;
+            }
+
+            let pontuacao = 0;
+            // Soma o valor de cada resposta selecionada (0 ou 1)
+            respostas.forEach(resposta => {
+                pontuacao += parseInt(resposta.value);
+            });
+
+            const caixaResultado = document.getElementById('resultado');
+            caixaResultado.style.display = "block"; // Torna a caixa visível
+
+            // Lógica de exibição baseada nos pontos
+            if (pontuacao <= 1) {
+                caixaResultado.style.backgroundColor = "#ffcdd2";
+                caixaResultado.style.color = "#b71c1c";
+                caixaResultado.innerHTML = `Pontuação: ${pontuacao}/4<br>🔴 Alerta: A produção precisa de mais práticas sustentáveis para proteger o futuro do campo.`;
+            } else if (pontuacao <= 3) {
+                caixaResultado.style.backgroundColor = "#fff9c4";
+                caixaResultado.style.color = "#f57f17";
+                caixaResultado.innerHTML = `Pontuação: ${pontuacao}/4<br>🟡 Em Evolução: Muito bom! A fazenda já caminha para um ótimo equilíbrio entre produção e natureza.`;
+            } else {
+                caixaResultado.style.backgroundColor = "#c8e6c9";
+                caixaResultado.style.color = "#1b5e20";
+                caixaResultado.innerHTML = `Pontuação: ${pontuacao}/4<br>🟢 Perfeito! Esta é uma propriedade Forte e Sustentável. Exemplo para o Agrinho 2026!`;
+            }
+        }
+    </script>
+</body>
+</html>
